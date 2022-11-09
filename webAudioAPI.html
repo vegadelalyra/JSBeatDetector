@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="webAudioAPI.js" async></script>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="./styles.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web Audio API trial</title>
+    </head>
+<body>
+    hi, there <br>
+    <audio src="miau.mp3"></audio> 
+    <div>
+        <button data-playing="false" role="switch" aria-checked="false">
+            <span>Play/Pause</span>
+        </button> <br>
+        <input type="range" id="volume" min="0" max="1" value="1" step="0.1" />
+    </div>    
+
+</body>
+</html>
