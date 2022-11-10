@@ -1,3 +1,26 @@
-input[type='range'] {
-    width:50px
+body {
+    background-color: black
+}
+@media screen and (min-width:480px){
+    input[type='range'] {
+        width:50%;
+        -webkit-appearance: none;
+        background:black;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+        background: rgb(95, 95, 95);
+       border-radius: 10px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: rgb(157, 11, 11);
+        cursor: ew-resize;
+        box-shadow: 0 0 2px 0 #555;
+        transition: background .3s ease-in-out;}
+    canvas {
+        width: 100%
+    }
 }

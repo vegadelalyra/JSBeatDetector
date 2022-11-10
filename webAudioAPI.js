@@ -97,7 +97,86 @@ volumeControl.addEventListener(
 const panner = new StereoPannerNode(audioContext, {pan: 0})
 
 
+// Learning to analyze audio data:
+
+// First. Let's try to add some visual
+const analyser = audioContext.createAnalyser(),
+      anal = audioContext.createAnalyser()
+    
 /* all AUDIO GRAPH variables must be declared before type it down. 
 (It's better to let the audio graph at the end) */
-track.connect(gainNode).connect(audioContext.destination)
+track.connect(gainNode).connect(anal).connect(analyser).connect(audioContext.destination)
 
+
+// VISUALIZE AUDIO WITH CANVAS: CREATING A WAVEFORM/OSCILLOSCOPE
+analyser.fftSize = 2048
+const bufferLength = analyser.frequencyBinCount,
+      dataArray = new Uint8Array(bufferLength),
+      canvas = document.querySelector('#canvas'),
+      canvasCtx = canvas.getContext('2d'),
+      WIDTH = canvas.width, HEIGHT = canvas.height/2
+
+canvas.setAttribute('width', WIDTH)
+canvas.setAttribute('height', HEIGHT)
+analyser.getByteTimeDomainData(dataArray)
+
+function draw() {
+  const drawVisual = requestAnimationFrame(draw)
+  analyser.getByteTimeDomainData(dataArray)
+  canvasCtx.fillStyle = "rgb(0, 0, 0)"
+  canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
+  canvasCtx.lineWidth = 2
+  canvasCtx.strokeStyle = "rgb(300, 0, 0)"
+  canvasCtx.beginPath()
+  const sliceWidth = WIDTH / bufferLength
+  let x = 0
+  for (let i = 0; i < bufferLength; i++) {
+    const v = dataArray[i] / 128.0
+    const y = v * (HEIGHT / 2)
+  
+    if (i === 0) {
+      canvasCtx.moveTo(x, y)
+    } else {
+      canvasCtx.lineTo(x, y)
+    }
+  
+    x += sliceWidth
+  }
+  canvasCtx.lineTo(WIDTH, HEIGHT / 2)
+  canvasCtx.stroke() 
+}
+
+draw()
+/* END OF OSCILLOSCOPE / WAVE FORM
+**
+** VISUALIZE AUDIO WITH CANVAS II: FREQUENCY WIN-AMP BAR GRAPH */
+anal.fftSize = 256
+const analBuffer = anal.frequencyBinCount,
+      analArray = new Uint8Array(analBuffer)
+
+
+const canvas2 = document.querySelector('#canvas2').getContext('2d'),
+      width2 = document.querySelector('#canvas2').width,
+      height2 = document.querySelector('#canvas2').height
+
+function winAmp() {
+  const drawVisual = requestAnimationFrame(winAmp)
+  anal.getByteFrequencyData(analArray)
+  canvas2.fillStyle = "rgb(0, 0, 0)"
+  canvas2.fillRect(0, 0, width2, height2)
+
+const barWidth = (width2 / analBuffer) * 2.5
+    let barHeight,
+    x = 0
+
+  for (let i = 0; i < analBuffer; i++) {
+    barHeight = analArray[i] ;
+
+    canvas2.fillStyle = `rgb(${barHeight + 100}, 50, 50)`
+    canvas2.fillRect(x, height2 - barHeight/2, barWidth, barHeight)
+
+    x += barWidth + 1;
+  }
+}
+
+winAmp()
