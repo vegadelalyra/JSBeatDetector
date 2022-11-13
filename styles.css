@@ -1,5 +1,9 @@
 body {
-    background-color: black
+    background-color: black;
+    
+}
+canvas {
+    width: 56%;
 }
 @media screen and (min-width:480px){
     input[type='range'] {
@@ -20,9 +24,11 @@ body {
         cursor: ew-resize;
         box-shadow: 0 0 2px 0 #555;
         transition: background .3s ease-in-out;}
+@media screen and (max-width:900px) {
     canvas {
-        width: 100%
+        width: 100%;
     }
+}
     label {
         color: white
     }

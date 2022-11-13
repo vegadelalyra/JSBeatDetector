@@ -99,14 +99,19 @@ const panner = new StereoPannerNode(audioContext, {pan: 0})
 
 // Learning to analyze audio data:
 
+
 // First. Let's try to add some visual
 const analyser = audioContext.createAnalyser(),
-      anal = audioContext.createAnalyser()
-    
-/* all AUDIO GRAPH variables must be declared before type it down. 
-(It's better to let the audio graph at the end) */
-track.connect(gainNode).connect(anal).connect(analyser).connect(audioContext.destination)
+      anal = audioContext.createAnalyser(),
+      getter = audioContext.createAnalyser()
+      const bufL = getter.frequencyBinCount
+      const myDataArray = new Float32Array(bufL)
+      
+      /* all AUDIO GRAPH variables must be declared before type it down. 
+      (It's better to let the audio graph at the end) */
+track.connect(gainNode).connect(getter).connect(anal).connect(analyser).connect(audioContext.destination)
 
+getter.getFloatFrequencyData(myDataArray)
 
 // VISUALIZE AUDIO WITH CANVAS: CREATING A WAVEFORM/OSCILLOSCOPE
 analyser.fftSize = 2048
@@ -114,7 +119,7 @@ const bufferLength = analyser.frequencyBinCount,
       dataArray = new Uint8Array(bufferLength),
       canvas = document.querySelector('#canvas'),
       canvasCtx = canvas.getContext('2d'),
-      WIDTH = canvas.width, HEIGHT = canvas.height/2
+      WIDTH = canvas.width, HEIGHT = 75
 
 canvas.setAttribute('width', WIDTH)
 canvas.setAttribute('height', HEIGHT)
@@ -180,3 +185,4 @@ const barWidth = (width2 / analBuffer) * 2.5
 }
 
 winAmp()
+
