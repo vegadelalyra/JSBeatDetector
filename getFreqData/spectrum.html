@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <body background-color = 'black'>
+    <title>Spectrum</title>
   <script>
     const audioCtx = new AudioContext()
 
@@ -18,7 +19,7 @@
     const dataArray = new Float32Array(bufferLength)
 
     //Create lowpass filter with its analyser node
-    const lowFreq = new BiquadFilterNode(audioCtx, {type: 'lowpass', frequency: '60', Q: '3' }) //filter
+    const lowFreq = new BiquadFilterNode(audioCtx, {type: 'lowpass', frequency: 60, Q: -3 }) //filter
     // second analyser
     const lowAnal = audioCtx.createAnalyser()
     lowAnal.fftSize = 256

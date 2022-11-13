@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: black; color:antiquewhite">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> RAF </title>
+</head>
+<body>
+    <span>
+        <h2>Request Animation Frame</h2>
+    </span>
+
+<div id="toy" style="background-color: rgb(40, 118, 138); width: 300px; height: 300px;"></div>
+
+    <script>
+        const element = document.getElementById('toy')
+        let start, previousTimeStamp, done = false
+
+        function step(timestamp) {
+            if (start === undefined) {
+                start = timestamp
+                }
+            const elapsed = timestamp - start
+
+            if (previousTimeStamp !== timestamp) {
+                // Math.min() is used here to make sure the element stops at exactly 200px
+                const count = Math.min(0.1 * elapsed, 200)
+                element.style.transform = `translateX(${count}px)`
+                if (count === 200) done = true
+            }
+
+            if (elapsed < 2000) { // Stop the animation after 2 seconds
+                previousTimeStamp = timestamp
+                if (!done) {
+                    requestAnimationFrame(step)
+                }
+            }
+        }
+
+        requestAnimationFrame(step)
+    </script>
+
+</body>
+</html>
