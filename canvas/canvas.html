@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="./canvas.js" async></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CANVAS </title>
+</head>
+<body>
+    <h1>MI LIENZO</h1>
+    <canvas width="320" height="160" style="border: 1px solid #000000"></canvas>
+    <div><h3>In order to use canvas, first you create a HTML canvas element, give it a width, height and style attributes and then you query select it on JS, next: canvas.getContext('2d') and you are done, you access to canvas object methods. </h3></div>
+    <script>
+        const lienzo = document.querySelector('canvas'),
+              context = lienzo.getContext('2d')
+              
+        
+        context.fillStyle = 'cyan'
+                    //   xi, yi  xf   yf
+        context.fillRect(20, 20, 100, 50)
+        // STROKE
+        context.strokeStyle = 'red'
+        context.strokeRect(135, 20, 50, 50)
+        context.lineWidth = 5
+        context.strokeRect(205, 20, 50, 50)
+        // RELLENAR TEXTO
+        context.font = '35px Arial Black'
+        context.fillStyle = 'silver'
+        context.fillText('Vega de la Lyra', 10, 120)
+    </script>
+
+</body>
+</html>
