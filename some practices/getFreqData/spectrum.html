@@ -7,7 +7,7 @@
     //Create audio source
     //Here, we use an audio file, but this could also be e.g. microphone input
     const audioEle = new Audio()
-    audioEle.src = "../miau.mp3" //insert file name here
+    audioEle.src = "../webAudioAPI/miau.mp3" //insert audio file here
     audioEle.autoplay = true
     audioEle.preload = "auto"
     const audioSourceNode = audioCtx.createMediaElementSource(audioEle)
@@ -29,9 +29,9 @@
 
     //Set up audio node network
     audioSourceNode.connect(analyserNode) // get an audio source and connect it to the first analyser
-    analyserNode.connect(lowFreq) // connect first analyser to the lowpass filter
-    lowFreq.connect(lowAnal) // connect lowpass filter to second analyser
-    lowAnal.connect(audioCtx.destination) // audioContext.destination = Speakers output
+    analyserNode.connect(lowAnal).connect(audioCtx.destination) // connect first analyser to the lowpass filter
+    //lowFreq.connect(lowAnal) // connect lowpass filter to second analyser
+    //lowAnal.connect(audioCtx.destination) // audioContext.destination = Speakers output
 
     //Create 2D canvas
     const canvas = document.createElement("canvas")
@@ -57,10 +57,10 @@
       canvasCtx.fillRect(0, 0, canvas.width, canvas.height)
 
       //Draw spectrum
-      const barWidth = (canvas.width / bufferLength2 * 2 ) 
+      const barWidth = (canvas.width / bufferLength2  ) 
       let posX = 0
       for (let i = 0; i < bufferLength2; i++) {
-        const barHeight = (dataLows[i] - Math.min(...dataLows)) * 7
+        const barHeight = (dataLows[i] - Math.min(...dataLows)) * 8
         canvasCtx.fillStyle =
           "rgb(" + Math.floor(barHeight + 100) + ", 50, 50)"
         canvasCtx.fillRect(

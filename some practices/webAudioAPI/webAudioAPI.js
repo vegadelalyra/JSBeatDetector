@@ -126,7 +126,7 @@ canvas.setAttribute('height', HEIGHT)
 analyser.getByteTimeDomainData(dataArray)
 
 function draw() {
-  const drawVisual = requestAnimationFrame(draw)
+  requestAnimationFrame(draw)
   analyser.getByteTimeDomainData(dataArray)
   canvasCtx.fillStyle = "rgb(0, 0, 0)"
   canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
@@ -165,7 +165,7 @@ const canvas2 = document.querySelector('#canvas2').getContext('2d'),
       height2 = document.querySelector('#canvas2').height
 
 function winAmp() {
-  const drawVisual = requestAnimationFrame(winAmp)
+  requestAnimationFrame(winAmp)
   anal.getByteFrequencyData(analArray)
   canvas2.fillStyle = "rgb(0, 0, 0)"
   canvas2.fillRect(0, 0, width2, height2)

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0px auto;
+            background-color:rgb(90, 142, 148);
+        }
+        div {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            width: 330px;
+            height: 330px;
+            border-radius: 50px/50px;       
+        }
+        button:hover {
+            background-color: rgb(189, 255, 118);
+            cursor: pointer;
+        }
+    </style>
+    <title> JS Beat Detector </title>
+</head>
+<body>
+    <div>
+        <button> <h1> PLAY ME ! </h1>  </button>
+    </div>
+
+    <script>
+        // First. Create your audio graph: audio source, analyser and destination. Create a button. Add a song. 
+        const audioCtx = new AudioContext(),
+              analyserNode = audioCtx.createAnalyser(),
+              audioElement = new Audio('./noCopyRightRandomSong.mp3'),
+              audioSource = audioCtx.createMediaElementSource(audioElement),
+              playButton = document.querySelector('button')
+
+    // Create a play/pause button 
+    playButton.addEventListener('click', () => {
+        audioCtx.state === 'suspended' ? audioCtx.state = 'resume' : null 
+        if (audioElement.paused === false) return audioElement.pause()
+        audioElement.play()
+        beatDetector()
+    })
+
+    // Connect all of the audio graph nodes, place it at the end of your code to avoid any kind of errors.
+    audioSource.connect(analyserNode).connect(audioCtx.destination)
+
+    // Configure your analyser node to detect the beat.
+
+    // fftSize must be between 2^5 and 2^15, so one of: 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, and 32768.
+    analyserNode.fftSize = 512
+
+    // Set up our audioData array. frequencyBinCount = fftSize / 2
+    const bufferLength = analyserNode.frequencyBinCount,
+          audioData = new Float32Array(bufferLength)
+    // Define the HTML object's coefficient sensibility to the beat with reaction. Replace 0.7 with analyserNode.minDecibles
+          reaction = 0.2, scaleValue = reaction / 0.7
+    
+    // Create your vanilla JavaScript beatDetector function.
+    const beatDetector = () => {
+        // If music has ended or is paused, stop the data gathering.
+        if (audioSource.mediaElement.paused == true) return 
+
+        // Get actual frequencies on the song per iteration ||  Float > Better precision. Byte > Better performance.
+        analyserNode.getFloatFrequencyData(audioData)
+
+        // Transform the style of the HTML element that you want to detect the audio beat.
+        playButton.style.transform = `scale(${scaleValue * (audioData[0]/100 + 1) + 1})` 
+        
+        // Recursively recall this function 60 times per second.
+        window.requestAnimationFrame(beatDetector)    
+    }
+    </script>
+</body>
+</html>
